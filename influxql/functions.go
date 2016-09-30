@@ -357,6 +357,70 @@ func (r *IntegerMovingAverageReducer) Emit() []FloatPoint {
 	}
 }
 
+// FloatCumulativeSumReducer cumulates the values from each point.
+type FloatCumulativeSumReducer struct {
+	curr    FloatPoint
+	emitted bool
+}
+
+// NewFloatCumulativeSumReducer creates a new FloatCumulativeSumReducer.
+func NewFloatCumulativeSumReducer() *FloatCumulativeSumReducer {
+	return &FloatCumulativeSumReducer{
+		curr: FloatPoint{Nil: true},
+	}
+}
+
+func (r *FloatCumulativeSumReducer) AggregateFloat(p *FloatPoint) {
+	if !r.curr.Nil && r.curr.Time == p.Time {
+		return
+	}
+	r.curr.Value += p.Value
+	r.curr.Time = p.Time
+	r.curr.Nil = false
+	r.emitted = false
+}
+
+func (r *FloatCumulativeSumReducer) Emit() []FloatPoint {
+	var pts []FloatPoint
+	if !r.curr.Nil && !r.emitted {
+		pts = []FloatPoint{r.curr}
+		r.emitted = true
+	}
+	return pts
+}
+
+// IntegerCumulativeSumReducer cumulates the values from each point.
+type IntegerCumulativeSumReducer struct {
+	curr    IntegerPoint
+	emitted bool
+}
+
+// NewIntegerCumulativeSumReducer creates a new IntegerCumulativeSumReducer.
+func NewIntegerCumulativeSumReducer() *IntegerCumulativeSumReducer {
+	return &IntegerCumulativeSumReducer{
+		curr: IntegerPoint{Nil: true},
+	}
+}
+
+func (r *IntegerCumulativeSumReducer) AggregateInteger(p *IntegerPoint) {
+	if !r.curr.Nil && r.curr.Time == p.Time {
+		return
+	}
+	r.curr.Value += p.Value
+	r.curr.Time = p.Time
+	r.curr.Nil = false
+	r.emitted = false
+}
+
+func (r *IntegerCumulativeSumReducer) Emit() []IntegerPoint {
+	var pts []IntegerPoint
+	if !r.curr.Nil && !r.emitted {
+		pts = []IntegerPoint{r.curr}
+		r.emitted = true
+	}
+	return pts
+}
+
 // FloatHoltWintersReducer forecasts a series into the future.
 // This is done using the Holt-Winters damped method.
 //    1. Using the series the initial values are calculated using a SSE.
