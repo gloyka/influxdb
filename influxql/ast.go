@@ -4004,7 +4004,7 @@ func evalBinaryExpr(expr *BinaryExpr, m map[string]interface{}) interface{} {
 			if !ok {
 				return nil
 			}
-			return math.Pow(float64(lhs), float64(rhs))
+			return math.Pow(lhs, float64(rhs))
 		case DIV:
 			if !ok {
 				return nil

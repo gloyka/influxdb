@@ -284,10 +284,12 @@ func (tok Token) Precedence() int {
 		return 2
 	case EQ, NEQ, EQREGEX, NEQREGEX, LT, LTE, GT, GTE:
 		return 3
-	case ADD, SUB, POW:
+	case ADD, SUB:
 		return 4
 	case MUL, DIV:
 		return 5
+	case POW:
+		return 6
 	}
 	return 0
 }
