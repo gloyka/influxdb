@@ -36,6 +36,7 @@ const (
 	SUB // -
 	MUL // *
 	DIV // /
+	POW // **
 
 	AND // AND
 	OR  // OR
@@ -155,6 +156,7 @@ var tokens = [...]string{
 	SUB: "-",
 	MUL: "*",
 	DIV: "/",
+	POW: "**",
 
 	AND: "AND",
 	OR:  "OR",
@@ -282,7 +284,7 @@ func (tok Token) Precedence() int {
 		return 2
 	case EQ, NEQ, EQREGEX, NEQREGEX, LT, LTE, GT, GTE:
 		return 3
-	case ADD, SUB:
+	case ADD, SUB, POW:
 		return 4
 	case MUL, DIV:
 		return 5

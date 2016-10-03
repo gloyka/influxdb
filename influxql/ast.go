@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"math"
 
 	"github.com/gogo/protobuf/proto"
 	internal "github.com/influxdata/influxdb/influxql/internal"
@@ -3999,6 +4000,11 @@ func evalBinaryExpr(expr *BinaryExpr, m map[string]interface{}) interface{} {
 				return nil
 			}
 			return lhs * rhs
+		case POW:
+			if !ok {
+				return nil
+			}
+			return math.Pow(float64(lhs), float64(rhs))
 		case DIV:
 			if !ok {
 				return nil
@@ -4032,6 +4038,8 @@ func evalBinaryExpr(expr *BinaryExpr, m map[string]interface{}) interface{} {
 				return lhs - rhs
 			case MUL:
 				return lhs * rhs
+			case POW:
+				math.Pow(float64(lhs), float64(rhs))
 			case DIV:
 				if rhs == 0 {
 					return float64(0)
@@ -4068,6 +4076,11 @@ func evalBinaryExpr(expr *BinaryExpr, m map[string]interface{}) interface{} {
 					return nil
 				}
 				return lhs * rhs
+			case POW:
+				if !ok {
+					return nil
+				}
+				return math.Pow(float64(lhs), float64(rhs))
 			case DIV:
 				if !ok {
 					return nil

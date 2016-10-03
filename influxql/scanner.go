@@ -62,9 +62,15 @@ func (s *Scanner) Scan() (tok Token, pos Pos, lit string) {
 	case '+', '-':
 		return s.scanNumber()
 	case '*':
+		if ch1, _ := s.r.read(); ch1 == '*' {
+			return POW, pos, ""
+		}
+		s.r.unread()
 		return MUL, pos, ""
 	case '/':
 		return DIV, pos, ""
+	// case '&':
+	// 	return POW, pos, ""
 	case '=':
 		if ch1, _ := s.r.read(); ch1 == '~' {
 			return EQREGEX, pos, ""

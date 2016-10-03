@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"sort"
 	"time"
+	"math"
 )
 
 // SelectOptions are options that customize the select call.
@@ -1132,6 +1133,8 @@ func floatBinaryExprFunc(op Token) interface{} {
 		return func(lhs, rhs float64) float64 { return lhs - rhs }
 	case MUL:
 		return func(lhs, rhs float64) float64 { return lhs * rhs }
+	case POW:
+		return func(lhs, rhs float64) float64 { return math.Pow(lhs, rhs) }
 	case DIV:
 		return func(lhs, rhs float64) float64 {
 			if rhs == 0 {
@@ -1163,6 +1166,8 @@ func integerBinaryExprFunc(op Token) interface{} {
 		return func(lhs, rhs int64) int64 { return lhs - rhs }
 	case MUL:
 		return func(lhs, rhs int64) int64 { return lhs * rhs }
+	case POW:
+		return func(lhs, rhs float64) float64 { return math.Pow(lhs, rhs) }
 	case DIV:
 		return func(lhs, rhs int64) float64 {
 			if rhs == 0 {
